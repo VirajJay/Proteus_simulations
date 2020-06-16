@@ -1,0 +1,219 @@
+_interrupt:
+  begin
+//taxiViraj.c,13 :: 		if (INTCON.TMR0IF==1)
+	STACK_2 <-  INTCON & 4
+	STACK_0 <- 2
+	STACK_2 <-  STACK_2 shr STACK_0
+	if ( STACK_2 != 1) then goto L_interrupt_0
+//taxiViraj.c,15 :: 		if(state==1){
+	if ( _state != 1) then goto L_interrupt_1
+//taxiViraj.c,16 :: 		time=time+1;
+	_time <-  _time + 1
+	_time <- _time
+//taxiViraj.c,17 :: 		fare=fare+1;
+	_fare <-  _fare + 1
+	_fare <- _fare
+//taxiViraj.c,19 :: 		}
+L_interrupt_1:
+//taxiViraj.c,20 :: 		INTCON.TMR0IF=0;
+	INTCON <-  INTCON & -5
+//taxiViraj.c,22 :: 		}
+L_interrupt_0:
+//taxiViraj.c,24 :: 		if(INTCON.INTF==1)
+	STACK_2 <-  INTCON & 2
+	STACK_0 <- 1
+	STACK_2 <-  STACK_2 shr STACK_0
+	if ( STACK_2 != 1) then goto L_interrupt_2
+//taxiViraj.c,26 :: 		delay_ms(1000);
+	asm: MOVLW	11
+	asm: MOVWF	STACK_12
+	asm: MOVLW	255
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_12,F
+	asm: GOTO	$+2
+	asm: GOTO	$+8
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: GOTO	$-9
+	asm: MOVLW	51
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	136
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//taxiViraj.c,27 :: 		state=state+1;
+	STACK_2 <-  _state + 1
+	_state <- STACK_2
+//taxiViraj.c,28 :: 		if(state==2)
+	if ( STACK_2 != 2) then goto L_interrupt_3
+//taxiViraj.c,30 :: 		state=0;
+	_state <- 0
+//taxiViraj.c,31 :: 		}
+L_interrupt_3:
+//taxiViraj.c,32 :: 		if((state==1) && (PORTB.F1==1))
+	if ( _state != 1) then goto L_interrupt_6
+	STACK_2 <-  PORTB & 2
+	STACK_0 <- 1
+	STACK_2 <-  STACK_2 shr STACK_0
+	if ( STACK_2 != 1) then goto L_interrupt_6
+L71_ex_L_interrupt_6:
+//taxiViraj.c,34 :: 		distance=distance+1;
+	_distance <-  _distance + 1
+	_distance <- _distance
+//taxiViraj.c,35 :: 		}
+L_interrupt_6:
+//taxiViraj.c,36 :: 		PORTC=(fare/100) + (32+64+128) ;
+	STACK_0 <-  _fare / 100
+	PORTC <-  STACK_0 + 224  [Optimized To Dest]
+	PORTC <- PORTC
+//taxiViraj.c,37 :: 		PORTC=((fare-((fare/100)*100))/10) + (16+64+128);
+	STACK_0 <-  STACK_0 * 100
+	STACK_0 <-  _fare - STACK_0
+	STACK_0 <-  STACK_0 / 10
+	PORTC <-  STACK_0 + 208  [Optimized To Dest]
+	PORTC <- PORTC
+//taxiViraj.c,38 :: 		PORTC=(fare%10)+(16+32+128);
+	STACK_0 <-  _fare mod 10
+	PORTC <-  STACK_0 + 176  [Optimized To Dest]
+	PORTC <- PORTC
+//taxiViraj.c,40 :: 		PORTD= (time/10)+(32+64+128);
+	STACK_0 <-  _time / 10
+	PORTD <-  STACK_0 + 224  [Optimized To Dest]
+	PORTD <- PORTD
+//taxiViraj.c,41 :: 		PORTD=  (time%10)+(16+64+128);
+	STACK_0 <-  _time mod 10
+	PORTD <-  STACK_0 + 208  [Optimized To Dest]
+	PORTD <- PORTD
+//taxiViraj.c,43 :: 		PORTA= (distance/10)+(32+64+128);
+	STACK_0 <-  _distance / 10
+	PORTA <-  STACK_0 + 224  [Optimized To Dest]
+	PORTA <- PORTA
+//taxiViraj.c,44 :: 		PORTA= (distance%10) + (16+64+128);
+	STACK_0 <-  _distance mod 10
+	PORTA <-  STACK_0 + 208  [Optimized To Dest]
+	PORTA <- PORTA
+//taxiViraj.c,45 :: 		delay_ms(1000);
+	asm: MOVLW	11
+	asm: MOVWF	STACK_12
+	asm: MOVLW	255
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_12,F
+	asm: GOTO	$+2
+	asm: GOTO	$+8
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: GOTO	$-9
+	asm: MOVLW	51
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	136
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//taxiViraj.c,46 :: 		INTCON.INTF=0;
+	INTCON <-  INTCON & -3
+//taxiViraj.c,47 :: 		}
+L_interrupt_2:
+  end
+
+_main:
+  begin
+//taxiViraj.c,56 :: 		TRISA=0b00000000;
+	TRISA <- 0
+//taxiViraj.c,57 :: 		TRISB=0b11110111;
+	TRISB <- 247
+//taxiViraj.c,58 :: 		TRISC=0b00000000;
+	TRISC <- 0
+//taxiViraj.c,59 :: 		TRISD=0b00000000;
+	TRISD <- 0
+//taxiViraj.c,60 :: 		INTCON=0b10110000;
+	INTCON <- 176
+//taxiViraj.c,61 :: 		OPTION_REG=0b10000000;
+	OPTION_REG <- 128
+//taxiViraj.c,64 :: 		PORTC=(fare/100) + (32+64+128) ;
+	STACK_0 <-  _fare / 100
+	PORTC <-  STACK_0 + 224  [Optimized To Dest]
+	PORTC <- PORTC
+//taxiViraj.c,65 :: 		PORTC=((fare-((fare/100)*100))/10) + (16+64+128);
+	STACK_0 <-  STACK_0 * 100
+	STACK_0 <-  _fare - STACK_0
+	STACK_0 <-  STACK_0 / 10
+	PORTC <-  STACK_0 + 208  [Optimized To Dest]
+	PORTC <- PORTC
+//taxiViraj.c,66 :: 		PORTC=(fare%10)+(16+32+128);
+	STACK_0 <-  _fare mod 10
+	PORTC <-  STACK_0 + 176  [Optimized To Dest]
+	PORTC <- PORTC
+//taxiViraj.c,68 :: 		PORTD= (time/10)+(32+64+128);
+	STACK_0 <-  _time / 10
+	PORTD <-  STACK_0 + 224  [Optimized To Dest]
+	PORTD <- PORTD
+//taxiViraj.c,69 :: 		PORTD=  (time%10)+(16+64+128);
+	STACK_0 <-  _time mod 10
+	PORTD <-  STACK_0 + 208  [Optimized To Dest]
+	PORTD <- PORTD
+//taxiViraj.c,71 :: 		PORTA= (distance/10)+(32+64+128);
+	STACK_0 <-  _distance / 10
+	PORTA <-  STACK_0 + 224  [Optimized To Dest]
+	PORTA <- PORTA
+//taxiViraj.c,72 :: 		PORTA= (distance%10) + (16+64+128);
+	STACK_0 <-  _distance mod 10
+	PORTA <-  STACK_0 + 208  [Optimized To Dest]
+	PORTA <- PORTA
+//taxiViraj.c,76 :: 		if(state==2)
+	if ( _state != 2) then goto L_main_7
+//taxiViraj.c,78 :: 		state=0;
+	_state <- 0
+//taxiViraj.c,79 :: 		}
+L_main_7:
+//taxiViraj.c,81 :: 		if((state==1) && (PORTB.F1==1))
+	if ( _state != 1) then goto L_main_10
+	STACK_2 <-  PORTB & 2
+	STACK_0 <- 1
+	STACK_2 <-  STACK_2 shr STACK_0
+	if ( STACK_2 != 1) then goto L_main_10
+L165_ex_L_main_10:
+//taxiViraj.c,83 :: 		distance=distance+1;
+	_distance <-  _distance + 1
+	_distance <- _distance
+//taxiViraj.c,84 :: 		}
+L_main_10:
+//taxiViraj.c,86 :: 		if(state==1)
+	if ( _state != 1) then goto L_main_11
+//taxiViraj.c,88 :: 		PORTB.F4=1;
+	PORTB <-  PORTB | 16
+//taxiViraj.c,89 :: 		}
+L_main_11:
+  end
+
+GlobalInitaxiViraj:
+  begin
+  end
+

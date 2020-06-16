@@ -1,0 +1,65 @@
+_main:
+  begin
+//testing.c,3 :: 		int x,y=0;
+	main_y_L0 <- 0
+//testing.c,4 :: 		TRISC=0b00000000;
+	TRISC <- 0
+//testing.c,6 :: 		while(1)
+L_main_0:
+//testing.c,8 :: 		x++;
+	main_x_L0 <-  main_x_L0 + 1
+	main_x_L0 <- main_x_L0
+//testing.c,9 :: 		y=y+2;
+	main_y_L0 <-  main_y_L0 + 2
+	main_y_L0 <- main_y_L0
+//testing.c,10 :: 		if (x>9)
+	if ( main_x_L0 <= 9) then goto L_main_2
+//testing.c,11 :: 		x=0;
+	main_x_L0 <- 0
+L_main_2:
+//testing.c,12 :: 		if (y>9)
+	if ( main_y_L0 <= 9) then goto L_main_3
+//testing.c,13 :: 		y=0;
+	main_y_L0 <- 0
+L_main_3:
+//testing.c,14 :: 		delay_ms(500);
+	asm: MOVLW	6
+	asm: MOVWF	STACK_12
+	asm: MOVLW	255
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_12,F
+	asm: GOTO	$+2
+	asm: GOTO	$+8
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: GOTO	$-9
+	asm: MOVLW	26
+	asm: MOVWF	STACK_11
+	asm: MOVLW	255
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_11,F
+	asm: GOTO	$+2
+	asm: GOTO	$+4
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+	asm: GOTO	$-5
+	asm: MOVLW	66
+	asm: MOVWF	STACK_10
+	asm: DECFSZ	STACK_10,F
+	asm: GOTO	$-1
+//testing.c,15 :: 		PORTC=x+(128+64+32);
+	PORTC <-  main_x_L0 + 224  [Optimized To Dest]
+	PORTC <- PORTC
+//testing.c,17 :: 		PORTC=y+(128+64+16);
+	PORTC <-  main_y_L0 + 208  [Optimized To Dest]
+	PORTC <- PORTC
+//testing.c,18 :: 		}
+	goto	L_main_0
+  end
+

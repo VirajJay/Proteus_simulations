@@ -1,0 +1,36 @@
+_main:
+  begin
+//sevenseg.c,4 :: 		TRISB=0b00001111;
+	TRISB <- 15
+//sevenseg.c,5 :: 		PORTB.F0=0;
+	PORTB <-  PORTB & -2
+//sevenseg.c,6 :: 		PORTB.F1=0;
+	PORTB <-  PORTB & -3
+//sevenseg.c,7 :: 		PORTB.F2=0;
+	PORTB <-  PORTB & -5
+//sevenseg.c,8 :: 		PORTB.F3=0;
+	PORTB <-  PORTB & -9
+//sevenseg.c,10 :: 		while(1)
+L_main_0:
+//sevenseg.c,12 :: 		PORTB.F7=PORTB.F0;
+	STACK_0 <-  PORTB & 1
+	PORTB <- setbit(STACK_0)
+//sevenseg.c,13 :: 		PORTB.F6=PORTB.F1;
+	STACK_1 <-  PORTB & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	PORTB <- setbit(STACK_1)
+//sevenseg.c,14 :: 		PORTB.F5=PORTB.F2;
+	STACK_1 <-  PORTB & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	PORTB <- setbit(STACK_1)
+//sevenseg.c,15 :: 		PORTB.F4=PORTB.F3;
+	STACK_1 <-  PORTB & 8
+	STACK_0 <- 3
+	STACK_1 <-  STACK_1 shr STACK_0
+	PORTB <- setbit(STACK_1)
+//sevenseg.c,16 :: 		}
+	goto	L_main_0
+  end
+

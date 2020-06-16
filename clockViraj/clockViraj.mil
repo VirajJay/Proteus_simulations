@@ -1,0 +1,171 @@
+_interrupt:
+  begin
+//clockViraj.c,6 :: 		if (INTCON.TMR0IF==1)
+	STACK_1 <-  INTCON & 4
+	STACK_0 <- 2
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 1) then goto L_interrupt_0
+//clockViraj.c,8 :: 		if(state==0){
+	if ( _state != 0) then goto L_interrupt_1
+//clockViraj.c,9 :: 		aa=aa+1;
+	STACK_1 <-  _aa + 1
+	_aa <- STACK_1
+//clockViraj.c,10 :: 		if(aa==10)
+	if ( STACK_1 != 10) then goto L_interrupt_2
+//clockViraj.c,12 :: 		aa=0;
+	_aa <- 0
+//clockViraj.c,13 :: 		sec=sec+1;
+	STACK_1 <-  _sec + 1
+	_sec <- STACK_1
+//clockViraj.c,14 :: 		if(sec==60)
+	if ( STACK_1 != 60) then goto L_interrupt_3
+//clockViraj.c,16 :: 		sec=0;
+	_sec <- 0
+//clockViraj.c,17 :: 		mit=mit+1;
+	STACK_1 <-  _mit + 1
+	_mit <- STACK_1
+//clockViraj.c,18 :: 		if(mit==60)
+	if ( STACK_1 != 60) then goto L_interrupt_4
+//clockViraj.c,20 :: 		mit=0;
+	_mit <- 0
+//clockViraj.c,21 :: 		hr=hr+1;
+	STACK_1 <-  _hr + 1
+	_hr <- STACK_1
+//clockViraj.c,22 :: 		if(hr==24)
+	if ( STACK_1 != 24) then goto L_interrupt_5
+//clockViraj.c,24 :: 		hr=0;
+	_hr <- 0
+//clockViraj.c,25 :: 		}
+L_interrupt_5:
+//clockViraj.c,26 :: 		}
+L_interrupt_4:
+//clockViraj.c,27 :: 		}
+L_interrupt_3:
+//clockViraj.c,28 :: 		}
+L_interrupt_2:
+//clockViraj.c,30 :: 		if((PORTB.F1==1) && (state==1))
+	STACK_1 <-  PORTB & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 1) then goto L_interrupt_8
+	if ( _state != 1) then goto L_interrupt_8
+L46_ex_L_interrupt_8:
+//clockViraj.c,32 :: 		hr=hr+1;
+	STACK_1 <-  _hr + 1
+	_hr <- STACK_1
+//clockViraj.c,33 :: 		if(hr>=24)
+	if ( STACK_1 < 24) then goto L_interrupt_9
+//clockViraj.c,35 :: 		hr=0;
+	_hr <- 0
+//clockViraj.c,36 :: 		}
+L_interrupt_9:
+//clockViraj.c,37 :: 		}
+L_interrupt_8:
+//clockViraj.c,38 :: 		if((PORTB.F1==1) && (state==2))
+	STACK_1 <-  PORTB & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 1) then goto L_interrupt_12
+	if ( _state != 2) then goto L_interrupt_12
+L68_ex_L_interrupt_12:
+//clockViraj.c,40 :: 		mit=mit+1;
+	STACK_1 <-  _mit + 1
+	_mit <- STACK_1
+//clockViraj.c,41 :: 		if(mit>=60)
+	if ( STACK_1 < 60) then goto L_interrupt_13
+//clockViraj.c,43 :: 		mit=0;
+	_mit <- 0
+//clockViraj.c,44 :: 		}
+L_interrupt_13:
+//clockViraj.c,45 :: 		}
+L_interrupt_12:
+//clockViraj.c,46 :: 		if((PORTB.F1==1) && (state==3))
+	STACK_1 <-  PORTB & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 1) then goto L_interrupt_16
+	if ( _state != 3) then goto L_interrupt_16
+L90_ex_L_interrupt_16:
+//clockViraj.c,48 :: 		sec=sec+1;
+	STACK_1 <-  _sec + 1
+	_sec <- STACK_1
+//clockViraj.c,49 :: 		if(sec>=60)
+	if ( STACK_1 < 60) then goto L_interrupt_17
+//clockViraj.c,51 :: 		sec=0;
+	_sec <- 0
+//clockViraj.c,52 :: 		}
+L_interrupt_17:
+//clockViraj.c,53 :: 		}
+L_interrupt_16:
+//clockViraj.c,54 :: 		INTCON.TMR0IF=0;
+	INTCON <-  INTCON & -5
+//clockViraj.c,55 :: 		}
+L_interrupt_1:
+//clockViraj.c,56 :: 		}
+L_interrupt_0:
+//clockViraj.c,58 :: 		if(INTCON.INTF==1)
+	STACK_1 <-  INTCON & 2
+	STACK_0 <- 1
+	STACK_1 <-  STACK_1 shr STACK_0
+	if ( STACK_1 != 1) then goto L_interrupt_18
+//clockViraj.c,60 :: 		state=state+1;
+	STACK_1 <-  _state + 1
+	_state <- STACK_1
+//clockViraj.c,61 :: 		if(state>=4)
+	if ( STACK_1 < 4) then goto L_interrupt_19
+//clockViraj.c,63 :: 		state=0;
+	_state <- 0
+//clockViraj.c,64 :: 		}
+L_interrupt_19:
+//clockViraj.c,68 :: 		INTCON.INTF=0;
+	INTCON <-  INTCON & -3
+//clockViraj.c,69 :: 		}
+L_interrupt_18:
+  end
+
+_main:
+  begin
+//clockViraj.c,75 :: 		TRISB=0b11111111;
+	TRISB <- 255
+//clockViraj.c,76 :: 		TRISC=0b00000000;
+	TRISC <- 0
+//clockViraj.c,77 :: 		TRISD=0b00000000;
+	TRISD <- 0
+//clockViraj.c,78 :: 		INTCON=0b10110000;
+	INTCON <- 176
+//clockViraj.c,79 :: 		OPTION_REG=0b10000000;
+	OPTION_REG <- 128
+//clockViraj.c,80 :: 		while(1)
+L_main_20:
+//clockViraj.c,82 :: 		PORTC= (sec/10)+(128+64+16);
+	STACK_0 <-  _sec / 10
+	PORTC <-  STACK_0 + 208  [Optimized To Dest]
+	PORTC <- PORTC
+//clockViraj.c,83 :: 		PORTC= (sec%10)+(128+64+32);
+	STACK_0 <-  _sec mod 10
+	PORTC <-  STACK_0 + 224  [Optimized To Dest]
+	PORTC <- PORTC
+//clockViraj.c,85 :: 		PORTC=(mit/10)+(64+32+16);
+	STACK_0 <-  _mit / 10
+	PORTC <-  STACK_0 + 112  [Optimized To Dest]
+	PORTC <- PORTC
+//clockViraj.c,86 :: 		PORTC=(mit%10)+(128+32+16);
+	STACK_0 <-  _mit mod 10
+	PORTC <-  STACK_0 + 176  [Optimized To Dest]
+	PORTC <- PORTC
+//clockViraj.c,88 :: 		PORTD=(hr/10)+(128+64+16);
+	STACK_0 <-  _hr / 10
+	PORTD <-  STACK_0 + 208  [Optimized To Dest]
+	PORTD <- PORTD
+//clockViraj.c,89 :: 		PORTD=(hr%10)+(128+64+32);
+	STACK_0 <-  _hr mod 10
+	PORTD <-  STACK_0 + 224  [Optimized To Dest]
+	PORTD <- PORTD
+//clockViraj.c,114 :: 		}
+	goto	L_main_20
+  end
+
+GlobalIniclockViraj:
+  begin
+  end
+

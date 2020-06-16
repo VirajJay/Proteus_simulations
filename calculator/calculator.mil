@@ -1,0 +1,80 @@
+_main:
+  begin
+//calculator.c,5 :: 		int i=0;
+	main_i_L0 <- 0
+//calculator.c,6 :: 		int out=0;
+	main_out_L0 <- 0
+//calculator.c,8 :: 		TRISB=0b00000000;
+	TRISB <- 0
+//calculator.c,9 :: 		PORTB.F0=0;
+	PORTB <-  PORTB & -2
+//calculator.c,10 :: 		PORTB.F1=0;
+	PORTB <-  PORTB & -3
+//calculator.c,11 :: 		PORTB.F2=0;
+	PORTB <-  PORTB & -5
+//calculator.c,12 :: 		PORTB.F3=0;
+	PORTB <-  PORTB & -9
+//calculator.c,13 :: 		PORTB.F4=0;
+	PORTB <-  PORTB & -17
+//calculator.c,14 :: 		PORTB.F5=0;
+	PORTB <-  PORTB & -33
+//calculator.c,15 :: 		PORTB.F6=0;
+	PORTB <-  PORTB & -65
+//calculator.c,16 :: 		PORTB.F7=0;
+	PORTB <-  PORTB & -129
+//calculator.c,18 :: 		while(1)
+L_main_0:
+//calculator.c,21 :: 		x=(PORTB.F0)+(PORTB.F1*2);
+	main_out_L0 <-  PORTB & 1
+	STACK_4 <-  PORTB & 2
+	STACK_0 <- 1
+	STACK_4 <-  STACK_4 shr STACK_0
+	STACK_0 <-  STACK_4 * 2
+	main_out_L0 <-  main_out_L0 + STACK_0
+//calculator.c,22 :: 		y=(PORTB.F2)+(PORTB.F3*2);
+	FLOC_main+12 <-  PORTB & 4
+	STACK_0 <- 2
+	FLOC_main+12 <-  FLOC_main+12 shr STACK_0
+	STACK_4 <-  PORTB & 8
+	STACK_0 <- 3
+	STACK_4 <-  STACK_4 shr STACK_0
+	STACK_0 <-  STACK_4 * 2
+	STACK_0 <-  FLOC_main+12 + STACK_0
+//calculator.c,24 :: 		out=x+y;
+	main_out_L0 <-  main_out_L0 + STACK_0
+	main_out_L0 <- main_out_L0
+//calculator.c,27 :: 		while(out>=0)
+L_main_2:
+	if ( main_out_L0 < 0) then goto L_main_3
+//calculator.c,29 :: 		a[i]=out%2;
+	STACK_0 <-  2 * main_i_L0
+	FLOC_main+12 <-  0 + STACK_0
+	STACK_0 <-  main_out_L0 mod 2
+	*FLOC_main+12 <- STACK_0
+//calculator.c,30 :: 		out=(out/2)-(a[i]/2);
+	FLOC_main+12 <-  main_out_L0 / 2
+	FLOC_main+12 <- STACK_0
+	STACK_0 <-  2 * main_i_L0
+	FSR <-  0 + STACK_0
+	STACK_0 <- *FSR
+	STACK_0 <-  STACK_0 / 2
+	main_out_L0 <-  FLOC_main+12 - STACK_0
+	main_out_L0 <- main_out_L0
+//calculator.c,31 :: 		i=i+1;
+	main_i_L0 <-  main_i_L0 + 1
+	main_i_L0 <- main_i_L0
+//calculator.c,32 :: 		}
+	goto	L_main_2
+L_main_3:
+//calculator.c,34 :: 		PORTB.F4=a[3];
+	PORTB <- setbit(main_a_L0+6)
+//calculator.c,35 :: 		PORTB.F5=a[2];
+	PORTB <- setbit(main_a_L0+4)
+//calculator.c,36 :: 		PORTB.F6=a[1];
+	PORTB <- setbit(main_a_L0+2)
+//calculator.c,37 :: 		PORTB.F7=a[0];
+	PORTB <- setbit(main_a_L0)
+//calculator.c,39 :: 		}
+	goto	L_main_0
+  end
+
